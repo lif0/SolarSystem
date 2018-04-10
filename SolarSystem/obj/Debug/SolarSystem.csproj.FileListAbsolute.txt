@@ -1,0 +1,9 @@
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\bin\Debug\SolarSystem.exe.config
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\bin\Debug\SolarSystem.exe
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\bin\Debug\SolarSystem.pdb
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\obj\Debug\WindowsFormsApplication4.Form1.resources
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\obj\Debug\SolarSystem.Properties.Resources.resources
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\obj\Debug\SolarSystem.csproj.GenerateResource.Cache
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\obj\Debug\SolarSystem.csproj.CoreCompileInputs.cache
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\obj\Debug\SolarSystem.exe
+C:\Users\Abraham\Desktop\Задания OpenGL\Khabizat.SolarSystem\SolarSystem\SolarSystem\obj\Debug\SolarSystem.pdb

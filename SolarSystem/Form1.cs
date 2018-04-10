@@ -11,6 +11,7 @@ using SharpGL;
 using SharpGL.WinForms;
 using SharpGL.SceneGraph;
 using SharpGL.Enumerations;
+
 namespace WindowsFormsApplication4
 {
     public partial class Form1 : Form
@@ -21,6 +22,7 @@ namespace WindowsFormsApplication4
         int view = 0;
         bool stars = true;
         bool orbits = true;
+        bool pause = false;
         #region Скорости вращения планет
         const float mercury = 4.0923f;//    360°/Сидерический период обращения - 87,969 дня
         const float venus = 1.6021f;//      360°/Сидерический период обращения - 224,698 дня
@@ -109,8 +111,8 @@ namespace WindowsFormsApplication4
             {
                 case Keys.D: day += 10; break;
                 case Keys.S: day -= 10; break;
-                case Keys.Y: year = (year + 5) % 360; break;
-                case Keys.T: year = (year - 5) % 360; break;
+
+                case Keys.P: pause = !pause;break;
             }
         }
 
@@ -123,11 +125,8 @@ namespace WindowsFormsApplication4
         double[] b = new double[n];
 
 
-
         private void openGLControl1_OpenGLDraw(object sender, RenderEventArgs args)
         {
-
-            
             gl.Enable(OpenGL.GL_DEPTH_TEST);
             gl.DepthFunc(OpenGL.GL_LEQUAL);
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
@@ -152,27 +151,12 @@ namespace WindowsFormsApplication4
             //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, specular);
             
 
-            float[] MaterialSpecular = { 0.0f, 0.0f, 0.0f, 1.0f };
-            float[] MaterialAmbient = { .4f, 0.4f, 0.4f, 1.0f };
+            //float[] MaterialSpecular = { 0.0f, 0.0f, 0.0f, 1.0f };
+            //float[] MaterialAmbient = { .4f, 0.4f, 0.4f, 1.0f };
             //gl.LightModel(OpenGL.GL_LIGHT_MODEL_AMBIENT, MaterialAmbient);
             //gl.LightModel(OpenGL.GL_SPECULAR, MaterialSpecular);
             gl.Enable(OpenGL.GL_LIGHT0);
 
-
-            //initlighting();
-            //float[] ambient = { 1f, 1f, 1f, 1.0f };
-            //float[] black = { 0f, 0f, 0f, 1.0f };
-            //float[] diffuse = { 1f, 1f, 1f, 1f };
-            //float[] position = { 0f, 0f, 0f, 1.0f};
-            //gl.Enable(OpenGL.GL_LIGHTING);
-            //gl.LightModel(OpenGL.GL_LIGHT_MODEL_AMBIENT, black);
-            //gl.Enable(OpenGL.GL_LIGHT0);
-            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_AMBIENT, ambient);
-            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, diffuse);
-            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, position);
-
-            //gl.Enable(OpenGL.GL_COLOR_MATERIAL);
-            //gl.ColorMaterial(OpenGL.GL_FRONT_AND_BACK, OpenGL.GL_AMBIENT);
             //конец освещения
 
             gl.LoadIdentity();
@@ -192,14 +176,45 @@ namespace WindowsFormsApplication4
                     gl.Vertex(x[i], y[i], z[i]);
                 }
                 gl.End();
+                gl.Disable(OpenGL.GL_POINT_SMOOTH);
                 #endregion
+
             }
-
-
 
             gl.LookAt(0, view, 15, 0, 0, 0, 0, 1, 0);
             gl.Rotate(15, 1, 0, 0);
-   
+
+            #region MyRegion
+            //gl.PushMatrix();
+            //gl.Translate(10, 10, 0);
+            gl.Color(1f, 1f, 1f);
+            gl.Begin(OpenGL.GL_LINE_STRIP);
+            gl.Vertex(0f, 0f, 0f);
+            gl.Vertex(1f, -0.7f, 0f);
+            gl.Vertex(2f, -1f, 0f);
+            gl.Vertex(3f, -0.8f, 0f);
+            gl.Vertex(4f, -0.5f, 0f);
+            gl.Vertex(4.3f, -1f, 0f);
+            gl.Vertex(3.4f, -1.25f, 0f);
+            gl.Vertex(3f, -0.8f, 0f);
+            gl.End();
+
+            gl.PointSize(7);
+            gl.Enable(OpenGL.GL_POINT_SMOOTH);
+            gl.Begin(OpenGL.GL_POINTS);
+            gl.Vertex(0f, 0f, 0f);
+            gl.Vertex(1f, -0.7f, 0f);
+            gl.Vertex(2f, -1f, 0f);
+            gl.Vertex(3f, -0.8f, 0f);
+            gl.Vertex(4f, -0.5f, 0f);
+            gl.Vertex(4.3f, -1f, 0f);
+            gl.Vertex(3.4f, -1.25f, 0f);
+            gl.Vertex(3f, -0.8f, 0f);
+            gl.End();
+            gl.Disable(OpenGL.GL_POINT_SMOOTH);
+            //gl.PopMatrix();
+            #endregion
+
             gl.Color(0.5f, 0.5f, 0.5f, 0.0f);
             if (orbits)
             {
@@ -211,25 +226,29 @@ namespace WindowsFormsApplication4
                 drawOrbit(3);//Орбита Венеры
                 drawOrbit(4);//Орбита Земли
                 drawOrbit(5);//Орбита Марса
-                drawOrbit(6);//Орбита Юпитера
-                drawOrbit(7);//Орбита Сатурна
-                drawOrbit(8);//Орбита Урана
-                drawOrbit(9);//Орбита Нептуна
+                drawOrbit(7);//Орбита Юпитера
+                drawOrbit(9);//Орбита Сатурна
+                drawOrbit(11);//Орбита Урана
+                drawOrbit(13);//Орбита Нептуна
                 gl.Disable(OpenGL.GL_SMOOTH);
                 gl.Disable(OpenGL.GL_LINE_STIPPLE);
                 #endregion
             }
 
+            #region Созвездие
+            gl.Begin(OpenGL.GL_LINE_STRIP);
+            
+            gl.End();
+            #endregion
 
-
-            //gl.Normal(0f, -50f, 0f);
             gl.Color(1.0f, 1.0f, 0.0f);
-            drawSphere(1.5f, 25, 25);//Солнце            
+            drawSphere(1.5f, 25, 25);//Солнце
 
-            //sp.Material.Texture.Create(gl, @"C:\Users\Abraham\Desktop\Задания OpenGL\IMG_8319.JPG");
+
 
             #region Рисуем планеты солнечной системы
             gl.PushMatrix();
+
             #region Меркурий
             gl.PushMatrix();
             gl.Rotate(mercury * day, 0, 1, 0);//Вокруг солнца
@@ -277,7 +296,7 @@ namespace WindowsFormsApplication4
             #region Юпитер
             gl.PushMatrix();
             gl.Rotate(jupiter * day, 0, 1, 0);//Вокруг солнца
-            gl.Translate(6, 0, 0);
+            gl.Translate(7, 0, 0);
             gl.Color(0.8235f, 0.7373f, 0.6824f, 1f);
             //gl.Rotate(rt, 0, 1, 0);//Вокруг себя
             drawSphere(0.5f, 25, 25);
@@ -286,18 +305,23 @@ namespace WindowsFormsApplication4
             #region Сатурн
             gl.PushMatrix();
             gl.Rotate(saturn * day, 0, 1, 0);//Вокруг солнца
-            gl.Translate(7, 0, 0);
+            gl.Translate(9, 0, 0);
             gl.Color(1f, 0.66f, 0.117f, 1.0f);
             //gl.Rotate(rt, 0, 1, 0);//Вокруг себя
             gl.Color(0.8824f, 0.7451f, 0.5451f, 1f);
+            gl.Rotate(25, 0, 0);
             drawOrbit(0.9f);
+            drawOrbit(0.85f);
+            drawOrbit(0.75f);
+            drawOrbit(0.65f);
+            gl.Rotate(-25, 0, 0);
             drawSphere(0.5f, 25, 25);
             gl.PopMatrix();
             #endregion
             #region Уран
             gl.PushMatrix();
             gl.Rotate(uranus * day, 0, 1, 0);//Вокруг солнца
-            gl.Translate(8, 0, 0);
+            gl.Translate(11, 0, 0);
             gl.Color(0.6196f, 0.7451f, 0.8314f, 1f);
             //gl.Rotate(rt, 0, 1, 0);//Вокруг себя
             drawSphere(0.3f, 25, 25);
@@ -306,7 +330,7 @@ namespace WindowsFormsApplication4
             #region Нептун
             gl.PushMatrix();
             gl.Rotate(neptune * day, 0, 1, 0);//Вокруг солнца
-            gl.Translate(9, 0, 0);
+            gl.Translate(13, 0, 0);
             gl.Color(0.4275f, 0.5451f, 0.7490f, 1f);
             //gl.Rotate(rt, 0, 1, 0);//Вокруг себя
             drawSphere(0.3f, 30, 30);
@@ -318,34 +342,19 @@ namespace WindowsFormsApplication4
 
             gl.Disable(OpenGL.GL_LIGHT0);
             gl.Disable(OpenGL.GL_LIGHTING);
-
-
-            //gl.PushMatrix();
-            //gl.Rotate(year+50f, 0.0f, 1.0f, 0.0f);
-            //gl.Translate(0.5, 0, 0);
-            //gl.Rotate(day, 0, 1, 0);
-
-            //gl.Color(0.5f, 0.5f, 0.5f);
-            //sphere(0.1f, 20, 20);
-
-
-            //gl.PopMatrix();
             gl.Disable(OpenGL.GL_DEPTH_TEST);
 
 
 
-            try
-            {
-                ++day;
-            }
-            catch (Exception)
-            {
-                day = 0;
-            }//++day
-
-            //rt++;
-
-            
+            if (!pause)
+                try
+                {
+                    ++day;
+                }
+                catch (Exception)
+                {
+                    day = 0;
+                }//++day 
         }
         private void drawSphere(double r, int nl, int nb)
         {
@@ -358,35 +367,53 @@ namespace WindowsFormsApplication4
 
         private void openGLControl1_OpenGLDraw2(object sender, RenderEventArgs args)
         {
-            IntPtr quad = gl.NewQuadric();
-
             gl.ClearColor(0f, 0f, 0f, 10f);
             gl.Clear(OpenGL.GL_COLOR_BUFFER_BIT | OpenGL.GL_DEPTH_BUFFER_BIT);
             gl.LoadIdentity();
 
-            gl.LookAt(0, 0, 5, 0, 0, 0, 0, 1, 0);
+            gl.LookAt(0, 0, 15, 0, 0, 0, 0, 1, 0);
 
 
-            gl.Enable(OpenGL.GL_LIGHTING);
-            float[] pos = { -2f, 0f, 0f, 1f };
-            float[] light = { 1f, 1f, 1f, 1f };
-            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, pos);
-            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, light);
-            gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, light);
-            gl.Enable(OpenGL.GL_LIGHT0);
+            //float[] position = { 1.0f, 1.0f, 1.0f, 1.0f };
+            //gl.Enable(OpenGL.GL_LIGHTING);
+            //gl.Enable(OpenGL.GL_COLOR_MATERIAL);
+            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, position);
+
+            //gl.Enable(OpenGL.GL_LIGHT0);
 
 
-            gl.PushMatrix();
-            //gl.Enable(OpenGL.GL_RESCALE_NORMAL_EXT);
-            gl.Color(1f, 1f, 0f, 1f);
-            IntPtr sph = gl.NewQuadric();
-            gl.QuadricDrawStyle(sph, OpenGL.GLU_LINE);
-            gl.QuadricNormals(sph, OpenGL.GL_SMOOTH);
-            gl.Sphere(sph, 1, 25, 25);
 
-            gl.PopMatrix();
-            
-            //sp.Render(gl, SharpGL.SceneGraph.Core.RenderMode.Render);
+
+            ////IntPtr sph = gl.NewQuadric();
+            ////gl.PushMatrix();
+            //////drawOrbit()
+            ////gl.Color(1f, 1f, 0, 1f);
+            ////gl.QuadricDrawStyle(sph, OpenGL.GLU_FILL);
+            ////gl.Sphere(sph, 1, 25*2, 25*2);
+            ////gl.PopMatrix();
+
+
+
+            //gl.Enable(OpenGL.GL_LIGHTING);
+            //float[] pos = { -2f, 0f, 0f, 1f };
+            //float[] light = { 1f, 1f, 1f, 1f };
+            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_POSITION, pos);
+            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_DIFFUSE, light);
+            //gl.Light(OpenGL.GL_LIGHT0, OpenGL.GL_SPECULAR, light);
+            //gl.Enable(OpenGL.GL_LIGHT0);
+
+
+            //gl.PushMatrix();
+            ////gl.Enable(OpenGL.GL_RESCALE_NORMAL_EXT);
+            //gl.Color(1f, 1f, 0f, 1f);
+            //IntPtr sph = gl.NewQuadric();
+            //gl.QuadricDrawStyle(sph, OpenGL.GLU_LINE);
+            //gl.QuadricNormals(sph, OpenGL.GL_SMOOTH);
+            //gl.Sphere(sph, 1, 25, 25);
+
+            //gl.PopMatrix();
+
+            ////sp.Render(gl, SharpGL.SceneGraph.Core.RenderMode.Render);
         }
 
         private void openGLControl1_OpenGLInitialized(object sender, EventArgs e)
@@ -397,7 +424,6 @@ namespace WindowsFormsApplication4
             gl.LoadIdentity();
             gl.Perspective(60.0f, openGLControl1.Width / openGLControl1.Height, 1.0f, 100.0f);
         }
-
 
         //Фоновое рассеяное освещение
         private void initlighting()
