@@ -6,3 +6,7 @@
 <br>
 <a href="https://en.wikipedia.org/wiki/Orbital_period">Orbital period</a><br>
 <a href="https://en.wikipedia.org/wiki/Rotation_period">Sidereal rotation period</a><br>
+
+<img src="https://github.com/lif0/SolarSystem/blob/master/sourse/info.png"></img>
+
+<img src="https://github.com/lif0/SolarSystem/blob/master/sourse/video.gif"></img>
