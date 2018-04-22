@@ -6,4 +6,3 @@
 <br>
 <a href="https://en.wikipedia.org/wiki/Orbital_period">Orbital period</a><br>
 <a href="https://en.wikipedia.org/wiki/Rotation_period">Sidereal rotation period</a><br>
-(c)Магомаева Хабизат
