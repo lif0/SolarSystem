@@ -75,7 +75,7 @@ namespace WindowsFormsApplication4
             this.FormBorderStyle = FormBorderStyle.None;
             this.WindowState = FormWindowState.Maximized;
 
-            openGLControl1_KeyDown(null, new KeyEventArgs(Keys.F12));
+            openGLControl1_KeyDown(null, new KeyEventArgs(Keys.F1));
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -161,6 +161,7 @@ namespace WindowsFormsApplication4
             gl.MatrixMode(OpenGL.GL_MODELVIEW);
             gl.Enable(OpenGL.GL_TEXTURE_2D);
 
+            #region Вращение камеры вокруг солнца
             if (rotate_cam)
             {
                 float TimeDelta = 0.15f;
@@ -170,6 +171,7 @@ namespace WindowsFormsApplication4
             }
             else
                 rotate_cam_Angle = 0;//Если вращение отключеноь,то вовзращаемся в начальную позицию
+            #endregion
 
             #region Туман
             if (fog)
@@ -201,7 +203,7 @@ namespace WindowsFormsApplication4
             gl.PopMatrix();
             #endregion
 
-           
+
             #region Звезды и создвездия
             if (stars)
             {
@@ -264,11 +266,12 @@ namespace WindowsFormsApplication4
             initlighting();//Источник света(Солнце)
             gl.LoadIdentity();
 
-            if(fog)//Если туман включен
+            #region Вкл/Выкл Туман
+            if (fog)//Если туман включен
                 gl.ClearColor(0.1f, 0.1f, 0.1f, 0f);//Очищаем экран.Цвет фона.
             else
                 gl.ClearColor(0.0f, 0.0f, 0.0f, 0f);//Очищаем экран.Цвет фона
-
+            #endregion
             gl.LookAt(0, view, 15, 0, 0, 0, 0, 1, 0);
             gl.Rotate(15, 1, 0, 0);
 
@@ -476,14 +479,25 @@ namespace WindowsFormsApplication4
                 {
                     ///1 сек = 30 кадров(FrameRate), за 1 кадр прибовляем 6 часов
                     ///1 секунда = 180 часов или 7 дней 5 часов к реальному маштабу
-                    day += hour*6;//Добовляем по 6 часов
+                    day += hour * 6;//Добовляем по 6 часов
                 }
                 catch (Exception)
                 {
                     day = 0;
                 }
         }
-                       
+
+        private string ConvertText(string str)
+        {
+            string result = "";
+
+            byte[] asci = Encoding.Default.GetBytes(str);
+
+            foreach (byte c in asci)
+                result += Convert.ToChar(c).ToString();
+
+            return result;
+        }
         private void initlighting()
         {
             float[] materialAmbient = { 0.05f, 0.05f, 0.05f, 1.0f };
@@ -617,32 +631,33 @@ namespace WindowsFormsApplication4
 
                 case Keys.Escape: Application.Exit(); break;
 
-                case Keys.F1:
+                case Keys.F2:
                     {
-                        if(this.FormBorderStyle == FormBorderStyle.None)
+                        if (this.FormBorderStyle == FormBorderStyle.None)
                             this.FormBorderStyle = FormBorderStyle.Sizable;
                         else
                             this.FormBorderStyle = FormBorderStyle.None;
                         break;
                     }
-                case Keys.F2:
+                case Keys.F3:
                     {
-                        if(this.WindowState == FormWindowState.Normal)
+                        if (this.WindowState == FormWindowState.Normal)
                             this.WindowState = FormWindowState.Maximized;
                         else
                             this.WindowState = FormWindowState.Normal;
                         break;
                     }
-                case Keys.F12:
+                case Keys.F1:
                     {
-                        string msg = "\r\n" +
-                            "(D/S) - +/- day\r\n" +
-                            "(Z) - Show/Hide stars\r\n" +
-                            "(O) - Show/Hide orbits\r\n" +
-                            "(G) - Show/Hide fog\r\n" +
-                            "(R) - On/Off Rotate cam\r\n" +
-                            "(P) - On/Off Pause";
-                        MessageBox.Show(msg, "[F12 - Show info]");
+                        try
+                        {
+                            string msg = "F1 - Show info\r\nF2 - Border Style\r\nF3 - Window State\r\n\r\n(D/S) - +/- day\r\n(Z) - Show/Hide stars\r\n(O) - Show/Hide orbits\r\n(G) - Show/Hide fog\r\n(R) - On/Off Rotate cam\r\n(P) - On/Off Pause";
+                            MessageBox.Show(msg, "Info");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                         break;
                     }
             }
