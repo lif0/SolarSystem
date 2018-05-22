@@ -10,4 +10,3 @@
 <img src="https://github.com/lif0/SolarSystem/blob/master/sourse/info.png"></img>
 
 <img src="https://github.com/lif0/SolarSystem/blob/master/sourse/video.gif"></img>
-(с)Магомаева Хабизат
